@@ -1,15 +1,25 @@
-# Cloudflare Pages configuration for the Gaydio website (gaydio-main-site).
+# Cloudflare Workers configuration for the Gaydio website (gaydio-main-site).
 #
-# Connected to Git in the Cloudflare dashboard: production branch main, build
-# command "npm run build", build output directory "dist". Every push to main,
-# including every Publish in the hub's Site Editor, rebuilds and republishes.
+# A Worker with static assets, no script: dist/ is served as it is, with
+# public/_headers and public/_redirects applied and 404.html for anything
+# not found. Connected to Git in the Cloudflare dashboard (Workers Builds):
+# production branch main, build command "npm run build", deploy command
+# "npx wrangler deploy". Every push to main, including every Publish in the
+# hub's Site Editor, rebuilds and republishes.
+#
+# The name must match the Worker's name in the dashboard or the deploy fails.
 #
 # While it is being built the site has no custom domain, is served only at
-# gaydio-main.pages.dev behind a Cloudflare Access policy, and stays hidden
+# its workers.dev address behind a Cloudflare Access policy, and stays hidden
 # from search engines (robots.txt, X-Robots-Tag and a noindex tag on every
 # page) until a build is run with PUBLIC_SITE=true. gaydio.co.uk's DNS is not
 # touched by anything here.
 
-name = "gaydio-main"
+name = "gaydio-main-site"
 compatibility_date = "2025-06-01"
-pages_build_output_dir = "./dist"
+workers_dev = true
+preview_urls = false
+
+[assets]
+directory = "./dist"
+not_found_handling = "404-page"
