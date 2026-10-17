@@ -1,0 +1,15 @@
+# Cloudflare Pages configuration for the Gaydio website (gaydio-main-site).
+#
+# Connected to Git in the Cloudflare dashboard: production branch main, build
+# command "npm run build", build output directory "dist". Every push to main,
+# including every Publish in the hub's Site Editor, rebuilds and republishes.
+#
+# While it is being built the site has no custom domain, is served only at
+# gaydio-main.pages.dev behind a Cloudflare Access policy, and stays hidden
+# from search engines (robots.txt, X-Robots-Tag and a noindex tag on every
+# page) until a build is run with PUBLIC_SITE=true. gaydio.co.uk's DNS is not
+# touched by anything here.
+
+name = "gaydio-main"
+compatibility_date = "2025-06-01"
+pages_build_output_dir = "./dist"

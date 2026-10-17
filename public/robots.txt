@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+# Preview default. Set PUBLIC_SITE=true for the launch build and replace this file.

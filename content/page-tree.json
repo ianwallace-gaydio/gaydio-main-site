@@ -1,0 +1,49 @@
+{
+  "items": [
+    { "type": "section", "id": "home", "label": "Home", "inNav": false },
+
+    { "type": "folder", "slug": "on-air", "label": "Radio", "inNav": true, "default": "schedule" },
+    { "type": "section", "id": "schedule", "parent": "on-air", "label": "Schedule", "inNav": true },
+    { "type": "section", "id": "presenters", "parent": "on-air", "label": "Presenters", "inNav": true },
+    { "type": "redirect", "slug": "replay", "parent": "on-air", "label": "Replay", "to": "/player/on-demand/", "inNav": true },
+    { "type": "redirect", "slug": "mixshows", "parent": "on-air", "label": "Mixshows", "to": "/music/mixshows/", "inNav": true },
+    { "type": "redirect", "slug": "music", "parent": "on-air", "label": "Music", "to": "/music/", "inNav": true },
+
+    { "type": "page", "page": "podcasts", "label": "Podcasts", "inNav": true },
+
+    { "type": "folder", "slug": "whats-new", "label": "What's New", "inNav": true, "default": "whats-new" },
+    { "type": "page", "page": "whats-new", "parent": "whats-new", "label": "What's New", "inNav": false },
+    { "type": "section", "id": "news", "parent": "whats-new", "label": "News", "inNav": true },
+
+    { "type": "folder", "slug": "win", "label": "Win", "inNav": true, "default": "win" },
+    { "type": "page", "page": "win", "parent": "win", "label": "Win", "inNav": false },
+
+    { "type": "folder", "slug": "events", "label": "Events", "inNav": true, "default": "events" },
+    { "type": "page", "page": "events", "parent": "events", "label": "Events", "inNav": false },
+    { "type": "section", "id": "guide", "parent": "events", "label": "The Guide", "inNav": true },
+
+    { "type": "folder", "slug": "contact", "label": "Connect", "inNav": true, "default": "contact" },
+    { "type": "page", "page": "contact", "parent": "contact", "label": "Contact", "inNav": true, "footer": "primary" },
+    { "type": "page", "page": "press-releases", "parent": "contact", "label": "Press releases", "inNav": true },
+
+    { "type": "redirect", "slug": "academy", "label": "Academy", "to": "https://www.gaydio.academy/", "inNav": true },
+
+    { "type": "folder", "slug": "music", "label": "Music", "inNav": false, "default": "music" },
+    { "type": "page", "page": "music", "parent": "music", "label": "Music", "inNav": false },
+    { "type": "page", "page": "mixshows", "parent": "music", "label": "Mixshows", "inNav": false },
+    { "type": "section", "id": "artists", "parent": "music", "label": "Artists", "inNav": false },
+
+    { "type": "folder", "slug": "player", "label": "Player", "inNav": false },
+    { "type": "section", "id": "on-demand", "parent": "player", "label": "On Demand", "inNav": false },
+
+    { "type": "section", "id": "club", "label": "Listener Club", "inNav": false },
+    { "type": "section", "id": "search", "label": "Search", "inNav": false },
+
+    { "type": "page", "page": "about-gaydio", "label": "About Gaydio", "inNav": false, "footer": "primary" },
+    { "type": "page", "page": "advertise", "label": "Advertise with us", "inNav": false, "footer": "primary" },
+    { "type": "page", "page": "terms-and-conditions", "label": "Terms and Conditions", "inNav": false, "footer": "legal" },
+    { "type": "page", "page": "privacy-policy", "label": "Privacy Policy", "inNav": false, "footer": "legal" },
+    { "type": "page", "page": "cookies-policy", "label": "Cookies Policy", "inNav": false, "footer": "legal" },
+    { "type": "page", "page": "competition-rules", "label": "Competition Rules", "inNav": false, "footer": "legal" }
+  ]
+}

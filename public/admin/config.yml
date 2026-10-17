@@ -1,0 +1,318 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# THE EDITOR'S CONFIGURATION
+#
+# This describes the site's content to the hub's Site Editor: what a page is,
+# what a sectional is, what the content areas hold, what the settings and the
+# theme are. The Site Editor reads this file from the repository and builds
+# its forms from it; the file is never published (build.mjs leaves
+# public/admin out of dist/).
+#
+# THE ONE RULE THAT MATTERS. Every key a content file carries must be
+# declared here. A key the editor does not know about is DELETED when
+# somebody saves that file, silently. tests/editor.test.mjs fails the build
+# if the two drift apart.
+#
+# QUOTING. An apostrophe inside single-quoted text is written twice ('the
+# venue''s'), or the text goes in double quotes. A lone apostrophe stops the
+# whole file parsing and the Site Editor refuses to open this site.
+#
+# The vocabulary is Aiir's, because that is what the team knows: pages,
+# folders, sections, sectionals, content areas, blocks, snippets.
+# ═══════════════════════════════════════════════════════════════════════════
+
+backend:
+  name: github
+  repo: ianwallace-gaydio/gaydio-main-site
+  branch: main
+
+media_folder: public/assets/img
+public_folder: /assets/img
+
+collections:
+  # ── PAGES ──────────────────────────────────────────────────────────────
+  # One file per page. Where a page sits, and its address, is the Page tree's
+  # to say (Page Manager in the hub): a page not in the tree is not built.
+  - name: pages
+    label: Pages
+    label_singular: Page
+    folder: content/pages
+    preview_path: '{{fields.slug}}'
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{title}}'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: slug, label: Web address, widget: string, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lower-case letters, numbers and hyphens'], hint: 'The last part of its address, e.g. about-gaydio. Where it sits is the Page tree''s to say. Changing this changes the address, so links to it break.' }
+      - { name: summary, label: Summary, widget: text, hint: 'Used as the description in search results, when the page is shared, and as the summary when the page is tagged into a sectional.' }
+      - name: body
+        label: Page
+        widget: markdown
+        modes: [rich_text]
+        buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list]
+        editor_components: []
+      - name: template
+        label: Template
+        widget: select
+        default: pages
+        options:
+          - { label: 'Pages (with the secondary column)', value: pages }
+          - { label: 'Pages Wide (no secondary column)', value: pages-wide }
+          - { label: 'Plain (no secondary column, nothing under the content)', value: plain }
+      - { name: sectionals, label: Sectionals on this page, widget: list, required: false, field: { name: sectional, label: Sectional, widget: relation, collection: sectionals, value_field: slug, search_fields: [title], display_fields: [title] }, hint: 'Shown under the page''s own words, in this order.' }
+      - { name: metaTitle, label: Meta title, widget: string, required: false, hint: 'Optional. The browser tab, search results and share cards. Left blank, the page title is used.' }
+      - { name: keywords, label: Search keywords, widget: string, required: false, hint: 'Separate keywords with spaces.' }
+      - { name: shareImage, label: Share picture, widget: image, required: false, hint: 'Used when the page is shared, and when it is tagged into a sectional.' }
+      - { name: showFrom, label: Page available from, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false, hint: 'Optional. Before this the page is off the public site and out of the navigation.' }
+      - { name: showUntil, label: Page available until, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false, hint: 'Optional. After this the page is off the public site and out of the navigation.' }
+      - { name: editorNotes, label: Notes for editors, widget: text, required: false, hint: 'Never shown on the site.' }
+
+  # ── SECTIONALS ─────────────────────────────────────────────────────────
+  # Reusable card lists, as in Aiir: an item links somewhere, tags a page (and
+  # takes its title, summary and picture), or is content of its own.
+  - name: sectionals
+    label: Sectionals
+    label_singular: Sectional
+    folder: content/sectionals
+    extension: json
+    format: json
+    create: true
+    delete: true
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{title}}'
+    fields:
+      - { name: title, label: Title, widget: string, hint: 'Internal. The heading shown on a page is set where the sectional is placed.' }
+      - { name: slug, label: Identifier, widget: string, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lower-case letters, numbers and hyphens'] }
+      - name: layout
+        label: Layout
+        widget: select
+        default: cards
+        options:
+          - { label: 'Cards (three across)', value: cards }
+          - { label: 'List (one per row, picture on the right)', value: list }
+          - { label: 'Lead (one large item)', value: lead }
+      - { name: randomise, label: Randomise, widget: boolean, default: false, required: false }
+      - { name: pinFirst, label: Keep the first N in place when randomised, widget: number, required: false, value_type: int, min: 0 }
+      - { name: limit, label: Limit, widget: number, required: false, value_type: int, min: 0, hint: '0 shows every item.' }
+      - { name: hideExpired, label: Hide expired, widget: boolean, default: true, required: false }
+      - name: items
+        label: Items
+        label_singular: item
+        widget: list
+        typeKey: type
+        types:
+          - name: link
+            label: Open link
+            summary: '{{title}}'
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: summary, label: Summary, widget: text, required: false }
+              - { name: image, label: Picture, widget: image, required: false }
+              - { name: imageAlt, label: Picture described, widget: string, required: false }
+              - { name: link, label: Link, widget: string, pattern: ['^(/|https://|mailto:)', 'An address on this site starting with /, or a full https:// address'] }
+              - { name: newWindow, label: Open in a new window, widget: boolean, default: false, required: false }
+              - { name: start, label: Appear from, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false }
+              - { name: end, label: Disappear after, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false }
+          - name: page
+            label: Tag to page
+            summary: '{{page}}'
+            fields:
+              - { name: page, label: Page, widget: relation, collection: pages, value_field: slug, search_fields: [title], display_fields: [title], hint: 'The item takes the page''s title, summary and share picture, and stays in step with them.' }
+              - { name: title, label: Title (override), widget: string, required: false }
+              - { name: summary, label: Summary (override), widget: text, required: false }
+              - { name: image, label: Picture (override), widget: image, required: false }
+              - { name: imageAlt, label: Picture described, widget: string, required: false }
+              - { name: start, label: Appear from, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false }
+              - { name: end, label: Disappear after, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false }
+          - name: content
+            label: Content
+            summary: '{{title}}'
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: summary, label: Text, widget: text, required: false }
+              - { name: image, label: Picture, widget: image, required: false }
+              - { name: imageAlt, label: Picture described, widget: string, required: false }
+              - { name: start, label: Appear from, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false }
+              - { name: end, label: Disappear after, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false }
+      - { name: editorNotes, label: Notes for editors, widget: text, required: false, hint: 'Never shown on the site.' }
+
+  # ── CONTENT AREAS ──────────────────────────────────────────────────────
+  # Aiir's Template Builder > Content Areas: each area is an ordered list of
+  # blocks. The block types are the registry in lib/blocks.mjs; the ones
+  # marked "coming" draw a placeholder until the data behind them is built.
+  - name: content-areas
+    label: Content areas
+    files:
+      - name: content-areas
+        label: Content areas
+        file: content/content-areas.json
+        fields:
+          - &area
+            name: homepagePrimary
+            label: 'Homepage: Primary Content'
+            label_singular: block
+            widget: list
+            required: false
+            fields:
+              - { name: name, label: Name, widget: string, required: false }
+              - name: type
+                label: Block type
+                widget: select
+                options:
+                  - { label: 'Sectional', value: sectional }
+                  - { label: 'Custom HTML', value: customHtml }
+                  - { label: 'Gaydio: News Mix (coming)', value: newsMix }
+                  - { label: 'News (coming)', value: news }
+                  - { label: 'Gaydio: Recently Played (coming)', value: recentlyPlayed }
+                  - { label: 'Gaydio: Local / Social / VIP (coming)', value: localSocialVip }
+                  - { label: 'Podcasts: Latest episodes (coming)', value: podcastsLatest }
+                  - { label: 'On Demand: Latest items (coming)', value: onDemandLatest }
+                  - { label: 'Advert (coming)', value: ad }
+              - { name: start, label: Start date, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false }
+              - { name: end, label: End date, widget: datetime, format: 'YYYY-MM-DDTHH:mm', required: false }
+              - name: settings
+                label: Settings
+                widget: object
+                required: false
+                fields:
+                  - { name: header, label: Header, widget: string, required: false }
+                  - { name: sectional, label: Sectional, widget: relation, collection: sectionals, value_field: slug, search_fields: [title], display_fields: [title], required: false, hint: 'For a Sectional block.' }
+                  - { name: html, label: HTML, widget: text, required: false, hint: 'For a Custom HTML block. Shown exactly as written.' }
+                  - { name: size, label: Advert size, widget: select, required: false, options: [{ label: 'Billboard 920x250', value: billboard }, { label: 'Leaderboard 720x90', value: leaderboard }, { label: 'MPU 300x250', value: mpu }] }
+                  - { name: story1Category, label: Story 1 category, widget: string, required: false, hint: 'For News Mix.' }
+                  - { name: story2Category, label: Story 2 category, widget: string, required: false, hint: 'For News Mix.' }
+          - { <<: *area, name: pagesSecondary, label: 'Pages: Secondary Column' }
+          - { <<: *area, name: pagesUnderContent, label: 'Pages: Under Content' }
+
+  # ── PAGE TREE ──────────────────────────────────────────────────────────
+  # Page Manager in the hub. Four kinds, as in Aiir. A folder's default page
+  # is served at the folder's own address.
+  - name: page-tree
+    label: Page tree
+    files:
+      - name: page-tree
+        label: Page tree
+        file: content/page-tree.json
+        fields:
+          - name: items
+            label: Pages, in order
+            label_singular: item
+            widget: list
+            typeKey: type
+            hint: 'Top to bottom is the order in the menu. Only top-level items can be in the main menu; a folder''s items marked for the menu are its dropdown.'
+            types:
+              - name: section
+                label: Section
+                summary: '{{label}}'
+                fields:
+                  - name: id
+                    label: Section
+                    widget: select
+                    hint: 'A part of the site the website builds itself. Its address is fixed.'
+                    options:
+                      - { label: 'Home (/)', value: home }
+                      - { label: 'Schedule (/on-air/)', value: schedule }
+                      - { label: 'Presenters (/on-air/presenters/)', value: presenters }
+                      - { label: 'News (/whats-new/news/)', value: news }
+                      - { label: 'The Guide (/events/the-guide/)', value: guide }
+                      - { label: 'Artists (/music/artist/)', value: artists }
+                      - { label: 'On Demand (/player/on-demand/)', value: on-demand }
+                      - { label: 'Listener Club (/club/)', value: club }
+                      - { label: 'Search (/search/)', value: search }
+                  - { name: label, label: Name in menus, widget: string }
+                  - { name: parent, label: Inside, widget: string, required: false, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'The web address of a folder'], hint: 'A folder whose address leads to this section''s, for grouping it in the menu.' }
+                  - { name: inNav, label: In the main menu, widget: boolean, default: false, required: false }
+                  - { name: footer, label: In the footer, widget: select, required: false, options: [{ label: 'Footer links', value: primary }, { label: 'Legal links', value: legal }] }
+              - name: page
+                label: Page
+                summary: '{{page}}'
+                fields:
+                  - { name: page, label: Page, widget: relation, collection: pages, value_field: slug, search_fields: [title], display_fields: [title] }
+                  - { name: parent, label: Inside, widget: string, required: false, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'The web address of a folder or section'], hint: 'Empty for the top level.' }
+                  - { name: label, label: Name in menus, widget: string, required: false, hint: 'Leave empty to use the page''s title.' }
+                  - { name: showing, label: Showing, widget: boolean, default: true, required: false, hint: 'Off takes it off the site.' }
+                  - { name: inNav, label: In the main menu, widget: boolean, default: false, required: false }
+                  - { name: footer, label: In the footer, widget: select, required: false, options: [{ label: 'Footer links', value: primary }, { label: 'Legal links', value: legal }] }
+                  - { name: newWindow, label: Open in a new window, widget: boolean, default: false, required: false }
+              - name: folder
+                label: Folder
+                summary: '{{label}} (/{{slug}}/)'
+                fields:
+                  - { name: slug, label: Web address, widget: string, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lower-case letters, numbers and hyphens'] }
+                  - { name: label, label: Name in menus, widget: string }
+                  - { name: parent, label: Inside, widget: string, required: false, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'The web address of a folder'] }
+                  - { name: default, label: Default page, widget: string, required: false, hint: 'The page or section inside this folder that is served at the folder''s own address.' }
+                  - { name: showing, label: Showing, widget: boolean, default: true, required: false }
+                  - { name: inNav, label: In the main menu, widget: boolean, default: false, required: false }
+                  - { name: footer, label: In the footer, widget: select, required: false, options: [{ label: 'Footer links', value: primary }, { label: 'Legal links', value: legal }] }
+              - name: redirect
+                label: Redirect
+                summary: '{{label}} (/{{slug}}/ to {{to}})'
+                fields:
+                  - { name: slug, label: Web address, widget: string, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Lower-case letters, numbers and hyphens'] }
+                  - { name: label, label: Name in menus, widget: string }
+                  - { name: to, label: Goes to, widget: string, pattern: ['^(/|https://)', 'An address on this site starting with /, or a full https:// address'] }
+                  - { name: permanent, label: Permanent, widget: boolean, default: false, required: false, hint: 'Tick only when the old address is gone for good: browsers remember a permanent redirect.' }
+                  - { name: parent, label: Inside, widget: string, required: false, pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'The web address of a folder or section'] }
+                  - { name: showing, label: Showing, widget: boolean, default: true, required: false }
+                  - { name: inNav, label: In the main menu, widget: boolean, default: false, required: false }
+                  - { name: footer, label: In the footer, widget: select, required: false, options: [{ label: 'Footer links', value: primary }, { label: 'Legal links', value: legal }] }
+                  - { name: newWindow, label: Open in a new window, widget: boolean, default: false, required: false }
+
+  # ── SITE SETTINGS ──────────────────────────────────────────────────────
+  - name: settings
+    label: Site settings
+    files:
+      - name: settings
+        label: Site settings
+        file: content/settings.json
+        fields:
+          - { name: siteName, label: Site name, widget: string, hint: 'In every page title and in the share cards.' }
+          - { name: siteTitle, label: Homepage title, widget: string, hint: 'The browser tab and search result for the homepage.' }
+          - { name: internalName, label: Internal name, widget: string, hint: 'What the site is called inside the hub.' }
+          - { name: description, label: Description, widget: text, hint: 'The default description for search results.' }
+          - { name: listenUrl, label: Listen button goes to, widget: string, pattern: ['^(/|https://)', 'An address on this site starting with /, or a full https:// address'] }
+          - { name: listenLabel, label: Listen button says, widget: string }
+          - name: social
+            label: Social network addresses
+            widget: object
+            fields:
+              - { name: facebook, label: Facebook, widget: string, required: false }
+              - { name: x, label: X, widget: string, required: false }
+              - { name: instagram, label: Instagram, widget: string, required: false }
+              - { name: tiktok, label: TikTok, widget: string, required: false }
+              - { name: youtube, label: YouTube, widget: string, required: false }
+          - { name: dabAreas, label: DAB areas, widget: string, required: false }
+          - { name: fmAreas, label: FM areas, widget: string, required: false }
+          - { name: footerLine, label: Footer line, widget: string, required: false }
+          - { name: siteUrl, label: Site address, widget: hidden }
+          - { name: timeZone, label: Time zone, widget: hidden }
+          - { name: primaryStation, label: Primary station, widget: hidden }
+
+  # ── THEME ──────────────────────────────────────────────────────────────
+  # Aiir's Template Builder > Theme Settings.
+  - name: theme
+    label: Theme settings
+    files:
+      - name: theme
+        label: Theme settings
+        file: content/theme.json
+        fields:
+          - { name: logo, label: Logo, widget: image }
+          - { name: siteBackground, label: Site background colour, widget: color }
+          - { name: siteBackgroundImage, label: Site background image, widget: image, required: false }
+          - { name: accent, label: Accent colour, widget: color }
+          - { name: navBackground, label: Navigation bar colour, widget: color }
+          - { name: presenterCutout, label: Presenter cut-out, widget: image, required: false, hint: 'Shown at the right of the header.' }
+          - { name: defaultShareImage, label: Default share picture, widget: image, required: false }
+          - name: headers
+            label: Header backgrounds
+            widget: object
+            fields:
+              - { name: morning, label: Morning, widget: object, fields: [{ name: image, label: Image, widget: image }, { name: from, label: Shown from (hour), widget: number, value_type: int, min: 0, max: 23 }, { name: to, label: Until (hour), widget: number, value_type: int, min: 0, max: 24 }] }
+              - { name: daytime, label: Daytime, widget: object, fields: [{ name: image, label: Image, widget: image }, { name: from, label: Shown from (hour), widget: number, value_type: int, min: 0, max: 23 }, { name: to, label: Until (hour), widget: number, value_type: int, min: 0, max: 24 }] }
+              - { name: evening, label: Evening, widget: object, fields: [{ name: image, label: Image, widget: image }, { name: from, label: Shown from (hour), widget: number, value_type: int, min: 0, max: 23 }, { name: to, label: Until (hour), widget: number, value_type: int, min: 0, max: 24 }] }

@@ -1,0 +1,13 @@
+{
+  "logo": "/assets/img/gaydio-logo-white.svg",
+  "siteBackground": "#f1f1f1",
+  "siteBackgroundImage": "",
+  "accent": "#5b68d9",
+  "navBackground": "#2f3b5e",
+  "headers": {
+    "morning": { "image": "/assets/img/header-morning.svg", "from": 6, "to": 10 },
+    "daytime": { "image": "/assets/img/header-daytime.svg", "from": 10, "to": 18 },
+    "evening": { "image": "/assets/img/header-evening.svg", "from": 18, "to": 6 }
+  },
+  "presenterCutout": ""
+}

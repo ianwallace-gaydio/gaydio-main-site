@@ -1,0 +1,21 @@
+{
+  "siteName": "Gaydio",
+  "siteTitle": "Gaydio, The UK's LGBTQ+ Station",
+  "internalName": "Gaydio (main site)",
+  "description": "Gaydio is the UK's LGBTQ+ radio station: music, news, podcasts, events and competitions, on air across the UK and online.",
+  "siteUrl": "https://www.gaydio.co.uk",
+  "timeZone": "Europe/London",
+  "primaryStation": "uk",
+  "listenUrl": "https://player.aiir.com/gaydio",
+  "listenLabel": "Listen",
+  "social": {
+    "facebook": "https://www.facebook.com/gaydio",
+    "x": "https://x.com/gaydio",
+    "instagram": "https://www.instagram.com/gaydio",
+    "tiktok": "",
+    "youtube": ""
+  },
+  "dabAreas": "To confirm: the DAB areas line shown in the theme",
+  "fmAreas": "To confirm: the FM areas line shown in the theme",
+  "footerLine": "Gaydio is a community interest company. To confirm: the registered details line from the live site's footer."
+}

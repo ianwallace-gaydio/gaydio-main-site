@@ -1,0 +1,23 @@
+{
+  "homepagePrimary": [
+    { "name": "Lead item", "type": "sectional", "settings": { "sectional": "homepage-lead" } },
+    { "name": "What's New", "type": "sectional", "settings": { "sectional": "whats-new", "header": "What's New" } },
+    { "name": "Ad - Billboard", "type": "ad", "settings": { "header": "", "size": "billboard" } },
+    { "name": "Recently Played", "type": "recentlyPlayed", "settings": { "header": "Recently Played" } },
+    { "name": "News", "type": "newsMix", "settings": { "header": "News", "story1Category": "GAYDIO NEWS", "story2Category": "HEADLINES" } },
+    { "name": "Local / Social / VIP", "type": "localSocialVip", "settings": {} },
+    { "name": "Leaderboard", "type": "ad", "settings": { "size": "leaderboard" } },
+    { "name": "More from Gaydio", "type": "sectional", "settings": { "sectional": "more-from-gaydio", "header": "More from Gaydio" } },
+    { "name": "Billboard 2", "type": "ad", "settings": { "size": "billboard" } },
+    { "name": "Podcasts", "type": "podcastsLatest", "settings": { "header": "Podcasts" } }
+  ],
+  "pagesSecondary": [
+    { "name": "MPU", "type": "ad", "settings": { "size": "mpu" } },
+    { "name": "FEATURED", "type": "sectional", "settings": { "sectional": "featured", "header": "Featured" } },
+    { "name": "Gaydio Replay", "type": "onDemandLatest", "settings": { "header": "Gaydio Replay" } }
+  ],
+  "pagesUnderContent": [
+    { "name": "Billboard 2", "type": "ad", "settings": { "size": "billboard" } },
+    { "name": "More from Gaydio", "type": "sectional", "settings": { "sectional": "more-from-gaydio", "header": "More from Gaydio" } }
+  ]
+}

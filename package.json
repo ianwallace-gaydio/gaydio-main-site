@@ -1,0 +1,15 @@
+{
+  "name": "gaydio-main-site",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Gaydio website, rebuilt off Aiir. Content in content/, built to dist/ by build.mjs, one real page per address, edited in the hub's Site Editor.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "npm run build && python3 -m http.server 8099 --directory dist",
+    "test": "npm run build && node --test tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

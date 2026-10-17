@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "description": "No Pages Functions yet. Everything is a static asset served from the edge. Live data (now playing, the schedule, news, forms) will be read from the hub Worker by the page, not served from here.",
+  "include": [],
+  "exclude": ["/*"]
+}

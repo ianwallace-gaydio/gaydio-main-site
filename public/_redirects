@@ -1,0 +1,2 @@
+# Cloudflare Pages redirects. Fixed ones only: folders and redirects from the
+# page tree (content/page-tree.json) are appended by build.mjs at build time.
