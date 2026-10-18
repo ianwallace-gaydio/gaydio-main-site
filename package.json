@@ -1,6 +1,6 @@
 {
   "name": "gaydio-main-site",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "The Gaydio website, rebuilt off Aiir. Content in content/, built to dist/ by build.mjs, one real page per address, edited in the hub's Site Editor.",
   "type": "module",

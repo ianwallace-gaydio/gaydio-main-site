@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.2 (18 Oct 2026)
+
+Back to Cloudflare Pages. The hub's Site Editor is built for Pages projects
+(draft previews on branch aliases, cache purge, the site list) and the other
+five Gaydio sites run the same way, so the Worker made by the dashboard's
+Create flow in 0.1.1 is deleted and wrangler.toml is the Pages shape again,
+which also stops Pages warning that the file is invalid. The Pages project is
+gaydio-main at gaydio-main.pages.dev. Adds the nightly rebuild workflow
+(needs the CF_PAGES_DEPLOY_HOOK secret) so scheduled blocks and sectional
+items appear and expire without anybody publishing.
+
 ## 0.1.1 (17 Oct 2026)
 
 Deploys as a Cloudflare Worker with static assets instead of a Pages project,

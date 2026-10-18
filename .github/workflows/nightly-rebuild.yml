@@ -1,0 +1,36 @@
+name: Nightly rebuild
+
+# Scheduled blocks and sectional items (start and end dates) and page
+# availability are applied when the site is built, and the site only builds
+# when something is pushed to main. On a quiet day nothing is, so this asks
+# Cloudflare Pages to rebuild main once a night, just after midnight in
+# London, the same as OutThere GM does.
+#
+# Needs one repository secret, CF_PAGES_DEPLOY_HOOK: the "nightly-rebuild"
+# deploy hook URL from Cloudflare (Workers & Pages > gaydio-main > Settings >
+# Builds > Deploy hooks). Anyone holding that URL can trigger a rebuild, and
+# nothing else, which is why it is a secret and not written here.
+
+on:
+  schedule:
+    # 00:20 UTC: 01:20 in summer, 00:20 in winter, London time.
+    - cron: '20 0 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  rebuild:
+    name: Ask Cloudflare Pages to rebuild main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call the deploy hook
+        env:
+          HOOK: ${{ secrets.CF_PAGES_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::The CF_PAGES_DEPLOY_HOOK secret is not set, so scheduled changes wait for the next push to main. See README.md, Cloudflare."
+            exit 1
+          fi
+          curl --fail --silent --show-error --max-time 30 -X POST "$HOOK" > /dev/null
+          echo "Rebuild requested."
