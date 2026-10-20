@@ -35,7 +35,13 @@ const distRoot = process.env.DIST_DIR ? path.resolve(process.env.DIST_DIR) : pat
 const isPublic = process.env.PUBLIC_SITE === 'true';
 const buildTime = Date.now();
 
-const readJson = async (file) => JSON.parse(await readFile(file, 'utf8'));
+// Pictures from the hub's picture library are served at media.gaydio.co.uk since
+// 20 Oct 2026. They were at media.gaydio.link, the same files, which some company
+// firewalls block outright. Any address still on the old name is rewritten here,
+// so no built page can name it.
+const MEDIA_OLD = 'https://media.gaydio.link/';
+const MEDIA = 'https://media.gaydio.co.uk/';
+const readJson = async (file) => JSON.parse((await readFile(file, 'utf8')).replaceAll(MEDIA_OLD, MEDIA));
 async function readCollection(name) {
   const directory = path.join(contentRoot, name);
   const files = (await readdir(directory)).filter((file) => file.endsWith('.json')).sort();

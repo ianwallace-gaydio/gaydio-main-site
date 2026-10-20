@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 (20 Oct 2026)
+
+Pictures from the hub's picture library load from media.gaydio.co.uk, not
+media.gaydio.link, which some company firewalls block outright. Same files. The
+security policy allows the new name only, and the build rewrites any old address
+it finds in the content, so no page can ask for the old one.
+
 ## 0.1.2 (18 Oct 2026)
 
 Back to Cloudflare Pages. The hub's Site Editor is built for Pages projects
